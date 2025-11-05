@@ -1,0 +1,19 @@
+{
+  "name": "ntwo-projekt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tvn24van/ntwo-projekt.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tvn24van/ntwo-projekt/issues"
+  },
+  "homepage": "https://github.com/tvn24van/ntwo-projekt#readme"
+}
