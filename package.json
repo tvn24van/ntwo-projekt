@@ -1,19 +1,29 @@
 {
-  "name": "ntwo-projekt",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@your-scope/my-chip",
+  "version": "0.1.0",
+  "description": "Reusable web component Chip",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "test"
+    "clean": "rm -rf dist",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tvn24van/ntwo-projekt.git"
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/jest": "^30.0.0",
+    "jest": "^29.0.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "rollup": "^2.79.2",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.9.3"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tvn24van/ntwo-projekt/issues"
-  },
-  "homepage": "https://github.com/tvn24van/ntwo-projekt#readme"
+  "dependencies": {
+    "tslib": "^2.8.1"
+  }
 }

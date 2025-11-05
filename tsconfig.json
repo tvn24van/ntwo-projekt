@@ -1,0 +1,6 @@
+{
+  "compilerOptions": { "target": "ES2019", "module": "ESNext", "outDir": "dist", "declaration": true ,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*"]
+}

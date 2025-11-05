@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Test my-chip</title>
+  <script type="module" src="./dist/index.js"></script>
 </head>
-<body>
+<body style="font-family:sans-serif; padding:20px">
+  <h1>Podgląd komponentu &lt;my-chip&gt;</h1>
 
+  <my-chip label="Cześć!" dismissible></my-chip>
+  <my-chip label="Stały chip"></my-chip>
+
+  <script>
+    // przykład dynamicznego dodania
+    const chip = document.createElement('my-chip');
+    chip.setAttribute('label', 'Dodany z JS');
+    chip.setAttribute('dismissible', '');
+    document.body.appendChild(chip);
+  </script>
 </body>
 </html>
