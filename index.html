@@ -8,8 +8,25 @@
 <body style="font-family:sans-serif; padding:20px">
   <h1>Podgląd komponentu &lt;my-chip&gt;</h1>
 
-  <my-chip label="Cześć!" dismissible></my-chip>
-  <my-chip label="Stały chip"></my-chip>
+<!--  <my-chip label="Cześć!" dismissible></my-chip>-->
+<!--  <my-chip label="Stały chip"></my-chip>-->
+
+  <my-chip label="Informacja" background="#e0f7fa" color="#006064"></my-chip>
+
+    <!-- Inny krój czcionki i rozmiar -->
+    <my-chip label="Custom font" font-family="Courier New" font-size="1.2rem"></my-chip>
+
+    <!-- Znika po 3 sekundach -->
+    <my-chip label="Znikam po chwili" disappear-after="3000"></my-chip>
+
+    <!-- Wszystko naraz -->
+    <my-chip
+      label="Hejka!"
+      dismissible
+      background="#fef3c7"
+      color="#92400e"
+      font-family="Arial"
+      font-size="1rem"/>
 
   <script>
     // przykład dynamicznego dodania

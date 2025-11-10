@@ -1,9 +1,32 @@
 const template = document.createElement('template');
 template.innerHTML = `
   <style>
-    :host { display: inline-flex; align-items: center; }
-    .chip { background: #eef2ff; color: #3730a3; padding: 4px 10px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 8px; }
-    .close { border: none; background: transparent; cursor: pointer; }
+    :host {
+      display: inline-flex;
+      align-items: center;
+      background: #eee;
+      border-radius: 16px;
+      padding: 6px 10px;
+      margin: 4px;
+      font-size: 0.9rem;
+      color: #333;
+      font-family: sans-serif;
+      transition: opacity 0.5s ease;
+      opacity: 1;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .close {
+      margin-left: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      background: transparent;
+      border: none;
+      color: inherit;
+    }
   </style>
   <div class="chip">
     <span class="label"><slot></slot></span>
@@ -13,71 +36,82 @@ template.innerHTML = `
 
 export class MyChip extends HTMLElement {
   static get observedAttributes() {
-    return ['label', 'dismissible'];
+    return [
+      'label',
+      'dismissible',
+      'background',
+      'color',
+      'font-family',
+      'font-size',
+      'disappear-after',
+    ];
   }
 
   private labelEl!: HTMLElement;
-  private dismissible!: boolean;
+  private closeBtn!: HTMLButtonElement;
+  private disappearTimeout?: number;
 
   constructor() {
     super();
     const shadow = this.attachShadow({ mode: 'open' });
+    shadow.appendChild(template.content.cloneNode(true));
 
-    const style = document.createElement('style');
-    style.textContent = `
-      :host {
-        display: inline-flex;
-        align-items: center;
-        background: #eee;
-        border-radius: 16px;
-        padding: 4px 8px;
-        margin: 4px;
-        font-size: 0.9rem;
-        color: #333;
-      }
-      .close {
-        margin-left: 8px;
-        cursor: pointer;
-        font-weight: bold;
-      }
-    `;
-
-    const wrapper = document.createElement('span');
-    this.labelEl = document.createElement('span');
-    this.labelEl.classList.add('label');
-
-    wrapper.appendChild(this.labelEl);
-    shadow.appendChild(style);
-    shadow.appendChild(wrapper);
+    this.labelEl = shadow.querySelector('.label')!;
+    this.closeBtn = shadow.querySelector('.close')!;
   }
 
   connectedCallback() {
     this.render();
+    this.applyCustomStyles();
+    this.startDisappearTimer();
+
+    this.closeBtn.addEventListener('click', () => this.remove());
   }
 
-  attributeChangedCallback(name: string, _oldValue: string | null, newValue: string | null) {
-    if (name === 'label') {
-      this.labelEl.textContent = newValue ?? '';
-    }
-    if (name === 'dismissible') {
-      this.render();
-    }
+  disconnectedCallback() {
+    this.closeBtn.removeEventListener('click', () => this.remove());
+    if (this.disappearTimeout) clearTimeout(this.disappearTimeout);
+  }
+
+  attributeChangedCallback() {
+    this.render();
+    this.applyCustomStyles();
+    this.startDisappearTimer();
   }
 
   render() {
-    const shadow = this.shadowRoot!;
-    const existingClose = shadow.querySelector('.close');
-    if (existingClose) existingClose.remove();
+    const labelAttr = this.getAttribute('label');
+    if (labelAttr) this.labelEl.textContent = labelAttr;
 
-    this.labelEl.textContent = this.getAttribute('label') ?? '';
-
+    // Pokaż / ukryj przycisk zamknięcia
     if (this.hasAttribute('dismissible')) {
-      const close = document.createElement('span');
-      close.textContent = '×';
-      close.className = 'close';
-      close.addEventListener('click', () => this.remove());
-      shadow.appendChild(close);
+      this.closeBtn.style.display = 'inline';
+    } else {
+      this.closeBtn.style.display = 'none';
     }
+  }
+
+  applyCustomStyles() {
+    const style = this.style;
+    if (this.hasAttribute('background')) style.background = this.getAttribute('background')!;
+    if (this.hasAttribute('color')) style.color = this.getAttribute('color')!;
+    if (this.hasAttribute('font-family')) style.fontFamily = this.getAttribute('font-family')!;
+    if (this.hasAttribute('font-size')) style.fontSize = this.getAttribute('font-size')!;
+  }
+
+  startDisappearTimer() {
+    if (this.disappearTimeout) clearTimeout(this.disappearTimeout);
+
+    const delayAttr = this.getAttribute('disappear-after');
+    if (!delayAttr) return;
+
+    const delay = parseInt(delayAttr, 10);
+    if (isNaN(delay) || delay <= 0) return;
+
+    this.disappearTimeout = window.setTimeout(() => {
+      this.style.opacity = '0';
+      setTimeout(() => this.remove(), 500);
+    }, delay);
   }
 }
 
