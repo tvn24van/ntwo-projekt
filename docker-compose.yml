@@ -14,11 +14,12 @@ services:
       - "8080:80"
   jenkins:
     image: jenkins/jenkins:lts
-    container_name: jenkins
+    container_name: jenkins-proj-ntwo
     ports:
       - "8081:8080"
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:z
 volumes:
   jenkins_home:
+  dev-node-modules:
