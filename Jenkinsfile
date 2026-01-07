@@ -37,5 +37,20 @@ pipeline {
                 sh 'npm run build'
             }
         }
+
+        stage('Deploy to Verdaccio') {
+            when {
+                branch 'main'
+            }
+            steps {
+                withCredentials([string(credentialsId: 'verdaccio-token', variable: 'NPM_TOKEN')]) {
+                    sh '''
+                      echo "//verdaccio:4873/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+                      npm publish --registry http://verdaccio:4873
+                    '''
+                }
+            }
+        }
+
     }
 }

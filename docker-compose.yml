@@ -23,6 +23,16 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /run/user/1000/podman/podman.sock:/var/run/docker.sock:z
+  verdaccio:
+    image: verdaccio/verdaccio
+    container_name: verdaccio-proj-ntwo
+    ports:
+      - "4873:4873"
+    volumes:
+      - verdaccio-storage:/verdaccio/storage
+    environment:
+      - VERDACCIO_LISTEN=0.0.0.0:4873
 volumes:
   jenkins_home:
   dev-node-modules:
+  verdaccio-storage:
