@@ -1,0 +1,24 @@
+services:
+  web-dev:
+    image: node:20-alpine
+    container_name: webstorm-dev
+    working_dir: /app
+
+    volumes:
+      - .:/app
+      - dev-node-modules:/app/node_modules
+
+    command: sh -c "npm install && npm run dev"
+
+    ports:
+      - "8080:80"
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8081:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+  jenkins_home:

@@ -1,9 +1,7 @@
 FROM node:20-alpine
 
-WORKDIR /workspace
+USER root
 
-RUN apk add --no-cache bash
+RUN mkdir -p /.jbdevcontainer && chmod 777 /.jbdevcontainer
 
-RUN git clone -b zmagania https://github.com/tvn24van/ntwo-projekt.git
-
-USER node
+RUN apk add --no-cache git

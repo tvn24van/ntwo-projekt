@@ -3,10 +3,16 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "postCreateCommand": "npm install",
-  "remoteUser": "node",
+  "remoteUser": "root",
   "workspaceFolder": "/workspace",
-  "mounts": [
-    "source=${localWorkspaceFolder},target=/workspace,type=bind"
-  ]
+
+  "postCreateCommand": "npm install",
+
+  "containerEnv": {
+    "XDG_CACHE_HOME": "/.jbdevcontainer/.cache",
+    "XDG_CONFIG_HOME": "/.jbdevcontainer/.config"
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+
+
 }
