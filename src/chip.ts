@@ -50,6 +50,7 @@ export class MyChip extends HTMLElement {
   private labelEl!: HTMLElement;
   private closeBtn!: HTMLButtonElement;
   private disappearTimeout?: number;
+  private readonly handleClose: () => void;
 
   constructor() {
     super();
@@ -58,6 +59,9 @@ export class MyChip extends HTMLElement {
 
     this.labelEl = shadow.querySelector('.label')!;
     this.closeBtn = shadow.querySelector('.close')!;
+    
+    // Wiązanie metody do instancji, aby removeEventListener działał poprawnie
+    this.handleClose = () => this.remove();
   }
 
   connectedCallback() {
@@ -65,18 +69,32 @@ export class MyChip extends HTMLElement {
     this.applyCustomStyles();
     this.startDisappearTimer();
 
-    this.closeBtn.addEventListener('click', () => this.remove());
+    this.closeBtn.addEventListener('click', this.handleClose);
   }
 
   disconnectedCallback() {
-    this.closeBtn.removeEventListener('click', () => this.remove());
+    this.closeBtn.removeEventListener('click', this.handleClose);
     if (this.disappearTimeout) clearTimeout(this.disappearTimeout);
   }
 
-  attributeChangedCallback() {
-    this.render();
-    this.applyCustomStyles();
-    this.startDisappearTimer();
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    if (oldValue === newValue) return;
+
+    switch (name) {
+      case 'label':
+      case 'dismissible':
+        this.render();
+        break;
+      case 'background':
+      case 'color':
+      case 'font-family':
+      case 'font-size':
+        this.applyCustomStyles();
+        break;
+      case 'disappear-after':
+        this.startDisappearTimer();
+        break;
+    }
   }
 
   render() {
