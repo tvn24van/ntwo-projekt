@@ -13,8 +13,11 @@ services:
     ports:
       - "8080:80"
   jenkins:
-    image: jenkins/jenkins:lts
+#    image: jenkins/jenkins:lts
     container_name: jenkins-proj-ntwo
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     ports:
       - "8081:8080"
     volumes:
