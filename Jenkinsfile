@@ -1,9 +1,8 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18-alpine'
-            args '-u root:root'
-        }
+    agent any
+
+    tools {
+        nodejs 'node-18'
     }
 
     environment {
